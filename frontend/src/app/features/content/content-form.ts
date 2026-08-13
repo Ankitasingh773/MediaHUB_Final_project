@@ -27,7 +27,7 @@ function normalizeFilePath(raw: string): string {
 // flag a "mismatch" they never consciously created. So the File Path field drives Content Type
 // (auto-set it from whichever folder the path points into) rather than the other way around —
 // the error below only fires if the user deliberately changes Type after a path is already set.
-const TYPE_FOLDER: Record<ContentAsset['type'], string> = { Video: 'Videos', Image: 'Images', Article: 'Articles' };
+const TYPE_FOLDER: Record<ContentAsset['type'], string> = { Video: 'Videos', Image: 'Images', Article: 'Articles', Movie: 'Videos' };
 
 function detectTypeFromPath(path: string): ContentAsset['type'] | null {
   const folder = path.split('/')[0];

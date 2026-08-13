@@ -14,7 +14,7 @@ import { EmptyState } from '../../shared/components/empty-state';
 import { LoadingSpinner } from '../../shared/components/loading-spinner';
 import { ToastService } from '../../shared/services/toast.service';
 
-const CONTENT_ICON: Record<string, string> = { Video: '🎞', Image: '🖼', Article: '📄' };
+const CONTENT_ICON: Record<string, string> = { Video: '🎞', Image: '🖼', Article: '📄', Movie: '🎬' };
 const NOTIF_ICON: Record<string, string> = { CONTENT: '🎞', SUBSCRIPTION: '◈', ROYALTY: '$', LICENSE: '⚖', EDITORIAL: '✎' };
 
 @Component({

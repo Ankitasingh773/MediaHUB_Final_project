@@ -56,9 +56,15 @@ export class TagManagement implements OnInit {
 
   load() {
     this.loading.set(true);
-    this.content.fetchTags().subscribe(t => {
-      this.tags.set(t);
-      this.loading.set(false);
+    this.content.fetchTags().subscribe({
+      next: t => {
+        this.tags.set(t);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.loading.set(false);
+        this.toast.warn(err?.error?.message ?? 'Unable to load tags');
+      }
     });
   }
 

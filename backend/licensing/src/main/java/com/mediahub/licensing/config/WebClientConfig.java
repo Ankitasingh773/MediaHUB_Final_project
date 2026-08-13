@@ -20,9 +20,7 @@ public class WebClientConfig {
                 .build();
     }
 
-    // Forwards the caller's incoming "Authorization" header onto every outbound
-    // request so downstream secured services (content-catalog, notification, …)
-    // can authenticate the service-to-service call.
+    
     private ExchangeFilterFunction propagateAuthorizationHeader() {
         return ExchangeFilterFunction.ofRequestProcessor(request -> {
             String authHeader = currentAuthorizationHeader();

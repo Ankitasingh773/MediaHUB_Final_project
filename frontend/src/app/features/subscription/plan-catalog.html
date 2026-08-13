@@ -1,8 +1,31 @@
 <div class="crumbs">Home / <b>Plan Catalog</b></div>
-<div class="page-head"><div><h1>Choose Your Plan</h1><p>Pick a plan that fits how you watch, read and listen.</p></div></div>
+@if (isAdmin) {
+  <div class="page-head"><div><h1>Plan Catalog</h1><p>Browse all subscription plans, pricing and access levels.</p></div></div>
+} @else {
+  <div class="page-head"><div><h1>Choose Your Plan</h1><p>Pick a plan that fits how you watch, read and listen.</p></div></div>
+}
 
 @if (loading()) {
   <app-loading-spinner></app-loading-spinner>
+} @else if (isAdmin) {
+  <div class="card">
+    <table>
+      <thead><tr><th>Plan</th><th>Price</th><th>Billing Cycle</th><th>Access Level</th><th>Status</th></tr></thead>
+      <tbody>
+        @for (p of plans(); track p.planId) {
+          <tr>
+            <td class="t-primary" style="font-weight:600">{{ p.name }}</td>
+            <td>${{ p.price }}</td>
+            <td>{{ p.billingCycle }}</td>
+            <td>{{ p.contentAccessLevel }}</td>
+            <td><app-status-badge [status]="p.status"></app-status-badge></td>
+          </tr>
+        } @empty {
+          <tr><td colspan="5" class="t-sub" style="text-align:center;padding:24px">No plans found.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
 } @else {
   <div class="plan-catalog">
     @for (p of plans(); track p.planId; let i = $index) {

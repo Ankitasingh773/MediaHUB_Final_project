@@ -13,11 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Fire-and-forget client that records an audit event with the IAM/audit service.
- * Never blocks the caller and never fails the primary action if the audit
- * service is slow or unreachable.
- */
 @Service
 public class AuditClient {
 
@@ -53,10 +48,6 @@ public class AuditClient {
                         eventType, targetEntityType, targetEntityId, error.getMessage()));
     }
 
-    // The gateway is the only thing that ever calls this service directly, so without
-    // X-Forwarded-For every audit event would just record the gateway's own address instead
-    // of the real caller. Falls back to the direct remote address when the header is absent
-    // (e.g. a service-to-service call made outside the gateway).
     private String resolveClientIp() {
         try {
             ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -69,10 +60,6 @@ public class AuditClient {
         }
     }
 
-    // Only reached when this service is called directly, bypassing the gateway (e.g. a local
-    // test) — the gateway already normalizes X-Forwarded-For for the normal request path. Java
-    // reports the IPv6 loopback as "0:0:0:0:0:0:0:1" and the IPv4 loopback as "127.0.0.1" for
-    // what is the same machine, so collapse both to one canonical string here too.
     private String normalizeLoopback(String ip) {
         return ("0:0:0:0:0:0:0:1".equals(ip) || "::1".equals(ip)) ? "127.0.0.1" : ip;
     }

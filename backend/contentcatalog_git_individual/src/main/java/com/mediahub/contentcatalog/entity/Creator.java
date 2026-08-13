@@ -11,7 +11,7 @@ public class Creator {
     @Column(name = "creatorId")
     private int creatorId;
 
-    @Column(name = "userId", unique = true, nullable = false)
+    @Column(name = "userId", nullable = false)
     private Long userId;
 
     @Column(name = "displayName", nullable = false)

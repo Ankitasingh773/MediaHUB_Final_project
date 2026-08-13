@@ -1,5 +1,6 @@
 package com.mediahub.contentcatalog.entity;
 
+import com.mediahub.contentcatalog.converter.ContentTypeConverter;
 import com.mediahub.contentcatalog.enums.ContentType;
 import jakarta.persistence.*;
 
@@ -18,7 +19,7 @@ public class ContentAsset {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = ContentTypeConverter.class)
     @Column(name = "type")
     private ContentType type;
 

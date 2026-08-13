@@ -48,8 +48,6 @@ public class LicenseAgreementController {
                 .body("{\"message\": \"License created successfully\"}");
     }
  
-    // Editorial needs read access too — Publication Calendar checks for an active license
-    // before it will let a schedule be created.
     @PreAuthorize("hasAnyAuthority('license:manage','editorial:manage')")
     @GetMapping("/getAllLicenses/v1.0")
     public ResponseEntity<List<LicenseAgreementResponseDTO>> getAll(

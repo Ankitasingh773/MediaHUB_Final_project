@@ -5,6 +5,7 @@ import { SubscriptionClient } from '../../core/api/subscription-client';
 import { SubscriptionPlan } from '../../core/models/subscription.models';
 import { AuthService } from '../../core/auth/auth.service';
 import { LoadingSpinner } from '../../shared/components/loading-spinner';
+import { StatusBadge } from '../../shared/components/status-badge';
 import { ToastService } from '../../shared/services/toast.service';
 
 const CURATED_PLAN_NAMES = ['Basic', 'Standard', 'Premium', 'Enterprise'];
@@ -53,7 +54,7 @@ const PLAN_META: Record<string, { desc: string; features: { label: string; yes: 
 
 @Component({
   selector: 'app-plan-catalog',
-  imports: [LoadingSpinner, FormsModule],
+  imports: [LoadingSpinner, StatusBadge, FormsModule],
   templateUrl: './plan-catalog.html'
 })
 export class PlanCatalog implements OnInit {
@@ -61,6 +62,10 @@ export class PlanCatalog implements OnInit {
   private auth = inject(AuthService);
   private toast = inject(ToastService);
   private router = inject(Router);
+
+  /** Admins don't subscribe — they browse the full catalog as a read-only management-style
+   *  table (matching the Commerce → Subscriptions → Plans screen) instead of the subscribe cards. */
+  isAdmin = this.auth.hasRole('admin');
 
   loading = signal(true);
   plans = signal<SubscriptionPlan[]>([]);
@@ -73,10 +78,12 @@ export class PlanCatalog implements OnInit {
 
   ngOnInit() {
     this.subscription.fetchPlans().subscribe(rows => {
-      const curated = rows
-        .filter(p => p.status === 'Active' && CURATED_PLAN_NAMES.includes(p.name))
-        .sort((a, b) => a.price - b.price);
-      this.plans.set(curated);
+      // Admins see every plan (with its status) as a management-style table; subscribers see
+      // only the curated Active plans they can actually sign up for.
+      const list = this.isAdmin
+        ? [...rows].sort((a, b) => a.price - b.price)
+        : rows.filter(p => p.status === 'Active' && CURATED_PLAN_NAMES.includes(p.name)).sort((a, b) => a.price - b.price);
+      this.plans.set(list);
       this.loading.set(false);
     });
   }

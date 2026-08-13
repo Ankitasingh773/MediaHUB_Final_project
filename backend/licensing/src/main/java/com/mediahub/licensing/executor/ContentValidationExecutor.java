@@ -15,11 +15,6 @@ public class ContentValidationExecutor {
 
     public Boolean validateContent(Integer contentId) {
 
-        // Capture the caller's Authorization header HERE, on the servlet request
-        // thread, where RequestContextHolder is populated. The reactive WebClient
-        // exchange filter runs on a reactor-netty thread where this ThreadLocal is
-        // empty, so relying on it there silently drops the token and the downstream
-        // Content Catalog call comes back 401.
         String authHeader = currentAuthorizationHeader();
 
         return webClient.get()

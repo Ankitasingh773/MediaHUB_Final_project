@@ -12,8 +12,6 @@ public class LicenseNotificationExecutor {
     @Autowired
     private WebClient webClient;
 
-    // @Async runs on a separate thread, so the caller's Authorization header can't be read
-    // via RequestContextHolder here — it has to be captured on the request thread and passed in.
     @Async
     public void sendNotification(
             NotificationRequestDTO notification,

@@ -1,6 +1,3 @@
-/* MediaHub design system — ported from demo.html's prototype, adapted for a real routed app
-   (the outer ".proto" prototype-chrome/frame wrappers are dropped; .shell/.auth now size to
-   the real viewport instead of a fixed 1440x900 embedded frame). */
 :root{
   --brand-600:#4f46e5;--brand-500:#6366f1;--brand-50:#eef2ff;--brand-100:#e0e7ff;
   --ink-900:#0f172a;--ink-700:#334155;--ink-500:#64748b;--ink-400:#94a3b8;
@@ -14,8 +11,7 @@
 html,body{height:100%}
 body{font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink-900);-webkit-font-smoothing:antialiased}
 
-/* No visible scrollbars anywhere in the app — scrolling still works (wheel/trackpad/keys),
-   the track/thumb chrome is just hidden so no page ever shows a scrollbar. */
+/* -----   Scrollbar ---- */
 *{scrollbar-width:none}
 *::-webkit-scrollbar{display:none}
 

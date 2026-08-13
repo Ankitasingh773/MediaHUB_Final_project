@@ -80,9 +80,15 @@ export class ContentList implements OnInit {
 
   load() {
     this.loading.set(true);
-    this.content.fetchContents().subscribe(rows => {
-      this.all.set(rows);
-      this.loading.set(false);
+    this.content.fetchContents().subscribe({
+      next: rows => {
+        this.all.set(rows);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.loading.set(false);
+        this.toast.warn(err?.error?.message ?? 'Unable to load content');
+      }
     });
   }
 

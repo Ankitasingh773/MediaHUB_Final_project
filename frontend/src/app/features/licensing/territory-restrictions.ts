@@ -54,9 +54,15 @@ export class TerritoryRestrictions implements OnInit {
 
   load() {
     this.loading.set(true);
-    this.licensing.getTerritoryRestrictions(undefined, true).subscribe(rows => {
-      this.rows.set(rows);
-      this.loading.set(false);
+    this.licensing.getTerritoryRestrictions(undefined, true).subscribe({
+      next: rows => {
+        this.rows.set(rows);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.loading.set(false);
+        this.toast.warn(err?.error?.message ?? 'Unable to load territory restrictions');
+      }
     });
   }
 
